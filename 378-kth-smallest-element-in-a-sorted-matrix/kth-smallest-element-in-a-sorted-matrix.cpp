@@ -8,8 +8,11 @@ public:
 
         while(low<=high){
             int mid = (low+high)/2;
+            // small_count stores how many elements are smaller than our mid
             int small_count = 0;
+            // for every row 
             for(int i=0; i<r; i++){
+                // upper bound gives iterator to element greater than mid
                 small_count += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
             }
             if(small_count < k)
