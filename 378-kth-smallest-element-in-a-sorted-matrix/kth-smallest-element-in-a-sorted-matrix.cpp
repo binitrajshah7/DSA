@@ -1,14 +1,22 @@
 class Solution {
 public:
-    // Brute Force: Maintain a max heap of size k push all elements from matrix whenever heap size is greater than k then pop the element
+    // Optimal Approach: We use BFS here but with slight modification
     int kthSmallest(vector<vector<int>>& matrix, int k) {
-        priority_queue<int> pq;
-        for(int i=0; i<matrix.size(); i++)
-            for(int j=0; j<matrix[0].size(); j++){
-                pq.push(matrix[i][j]);
-                if(pq.size() > k)
-                    pq.pop();
+        int r = matrix.size(), c = matrix[0].size();
+        int low = matrix[0][0];
+        int high = matrix[r-1][c-1];
+
+        while(low<=high){
+            int mid = (low+high)/2;
+            int small_count = 0;
+            for(int i=0; i<r; i++){
+                small_count += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
             }
-        return pq.top();
+            if(small_count < k)
+                low = mid+1;
+            else
+                high = mid-1;
+        }
+        return low;
     }
 };
