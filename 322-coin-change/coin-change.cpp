@@ -1,27 +1,27 @@
 class Solution {
 public:
-    // Infinite KnapSack problem Recursive approach
-    int solve(vector<int> &coins, int index, int amount, vector<vector<int>> &dp){
-        if(index == 0){
-            if(amount % coins[0] == 0)
-                return amount/coins[0];
-            return 1e9;
-        }
-
-        if(dp[index][amount] != -1)
-            return dp[index][amount];
-
-        int not_pick = solve(coins, index-1, amount, dp);
-        int pick = INT_MAX;
-        if(coins[index] <= amount)
-            pick = 1 + solve(coins, index, amount-coins[index], dp);
-        return dp[index][amount] = min(pick, not_pick);
-    }
-
+    // Tabulation Approach
     int coinChange(vector<int>& coins, int amount) {
         int n = coins.size();
         vector<vector<int>> dp(n, vector<int> (amount+1, -1));
-        int result = solve(coins, n-1, amount, dp);
+
+        for(int t=0; t<=amount; t++){
+            if(t%coins[0] == 0)
+                dp[0][t] = t/coins[0];
+            else
+                dp[0][t] = 1e9;
+        }
+
+        for(int index=1; index<n; index++){
+            for(int target=0; target<=amount; target++){
+                int not_pick = dp[index-1][target];
+                int pick = INT_MAX;
+                if(coins[index] <= target)
+                    pick = 1 + dp[index][target-coins[index]];
+                dp[index][target] = min(pick, not_pick);
+            }
+        }
+        int result = dp[n-1][amount];
         return result>=1e9? -1: result;
     }  
 };
