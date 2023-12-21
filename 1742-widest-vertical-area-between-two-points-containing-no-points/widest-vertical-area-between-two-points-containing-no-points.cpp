@@ -1,13 +1,24 @@
 class Solution {
 public:
-    // Intuition find difference between consecutive points by sorting implies no points will be in between
     int maxWidthOfVerticalArea(vector<vector<int>>& points) {
-        sort(points.begin(), points.end());
-        int result = INT_MIN;
-
-        for(int i=1; i<points.size(); i++){
-            result = max(result, points[i][0] - points[i-1][0]);
+        // stores unique x co-ordinates 
+        set<int> uniqueX; 
+        for (const auto& point : points) {
+            uniqueX.insert(point[0]); 
         }
-        return result;
+        
+        int maxDifference = 0;
+        int previousX = INT_MIN;
+        
+        // for every x coordinate
+        for (int x : uniqueX) {
+            if (previousX != INT_MIN) {
+                // subtracting from previous occurence of x to get width
+                maxDifference = max(maxDifference, x - previousX); 
+            }
+            previousX = x;
+        }
+        
+        return maxDifference;
     }
 };
