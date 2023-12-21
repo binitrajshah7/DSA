@@ -1,5 +1,6 @@
 class Solution {
 public:
+    // Intuition find difference between consecutive points by sorting implies no points will be in between
     int maxWidthOfVerticalArea(vector<vector<int>>& points) {
         sort(points.begin(), points.end());
         int result = INT_MIN;
