@@ -8,15 +8,9 @@
  */
 class Solution {
 public:
-    // by swapping move current node which needs to be deleted to last then delete BINGO!
-    void deleteNode(ListNode* node) {
-        ListNode* curr = node;
 
-        while(curr->next->next != NULL){
-            swap(curr->val, curr->next->val);
-            curr = curr->next;
-        }
-        swap(curr->val, curr->next->val);
-        curr->next = NULL;
+    void deleteNode(ListNode* node) {
+        node->val = node->next->val;
+        node->next = node->next->next;
     }
 };
