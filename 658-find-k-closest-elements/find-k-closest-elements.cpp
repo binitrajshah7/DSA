@@ -1,26 +1,21 @@
 class Solution {
 public:
-    // Brute force: create a max heap of size k push element with abs of difference and pop element with max distance
-    // if heap size becomes greater than k elements
+    // Optimal Solution: Binary Search Approach
+    // Find the closest element's index to x and traverse on both side with 2 pointers to get k closest element
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
-        priority_queue<pair<int, int>> pq;
+        int n = arr.size();
 
-        for(auto e: arr){
-            int difference = abs(e-x);
-            pq.push({difference, e});
-        
-            if(pq.size() > k)
-                pq.pop();
-        }
+        int closest_to_target = lower_bound(arr.begin(), arr.end(), x) - arr.begin();
+        int left = closest_to_target - 1;
+        int right = closest_to_target;
 
-        // pop the k element from heap and append to result
-        vector<int> result;
-        while(!pq.empty()){
-            result.push_back(pq.top().second);
-            pq.pop();
+        while(k--){
+            if(right>=n || (left>=0 && x-arr[left] <= arr[right]-x))
+                left--;
+            else
+                right++;
         }
-        // ans result is required in sorted order
-        sort(result.begin(), result.end());
-        return result;
+        // as left can be -1th index here right is exclusive so no check required
+        return vector<int> (arr.begin()+left+1, arr.begin()+right);
     }
 };
