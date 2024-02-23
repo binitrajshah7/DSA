@@ -29,9 +29,8 @@ public:
                     }
                 }
             }
-            if(k == 0)
+            if(!k--)
                 break;
-            k--;
         }
 
         return cost[dst];
